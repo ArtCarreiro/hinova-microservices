@@ -16,34 +16,51 @@ Fluxo:
 # Organização do Repositório
 
 ```
-root/
+api/
  ├── crm-service/
  ├── sign-service/
  └── utils/
      ├── postman-collections
-     └── scripts-bd
+     └── scripts (banco de dados)
 ```
 ---
 
-# Execução no Ambiente Local
 
-## CRM
+## Configuração e Execução
+
+### Clonar o repositório
+
+```bash
+git clone git@github.com:ArtCarreiro/hinova-microservices.git
+
+cd crm-service
+```
+
+### Banco de Dados
+
+```bash
+cd utils/scripts/
+
+./create-databases.sh
+```
+
+### CRM
 
 ```bash
 cd crm-service
+
 mvn spring-boot:run
 ```
 
-## SIGN
+### SIGN
 
 ```bash
 cd sign-service
+
 mvn spring-boot:run
 ```
 
-
-
-## Via Docker:
+### Docker:
 
 ```bash
 docker-compose up -d

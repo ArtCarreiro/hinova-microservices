@@ -27,9 +27,6 @@ public class ProposalService implements ProposalServiceBO {
     @Autowired
     private ModelMapper modelMapper;
 
-    @Value("${crm.callback-url}")
-    private String callbackUrl;
-
     @Override
     @Transactional
     public Proposal createProposal(Proposal newProposal) {
@@ -54,7 +51,6 @@ public class ProposalService implements ProposalServiceBO {
 
             SignCreateContractRequestDTO signRequest = new SignCreateContractRequestDTO();
             signRequest.setExternalProposalId(proposal.getUuid());
-            signRequest.setCallbackUrl(callbackUrl);
             SignCreateContractResponseDTO signResponse = signClient.createContract(signRequest);
 
             proposal.setStatus(ProposalStatus.SENT_TO_SIGNATURE);

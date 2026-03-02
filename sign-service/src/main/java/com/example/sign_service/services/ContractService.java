@@ -41,7 +41,6 @@ public class ContractService implements ContractServiceBO {
 
         Contract newContract = new Contract();
         newContract.setExternalProposalId(request.getExternalProposalId());
-        newContract.setCallbackUrl(request.getCallbackUrl()); // se você adicionou esse campo
         newContract.setStatus(ContractStatus.PENDING_SIGNATURE);
         newContract.setDocument("Contrato simulado da proposta: " + request.getExternalProposalId());
 

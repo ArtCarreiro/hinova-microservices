@@ -8,6 +8,5 @@ import lombok.Setter;
 public class SignCreateContractRequestDTO {
 
     private String externalProposalId;
-    private String callbackUrl;
 
 }

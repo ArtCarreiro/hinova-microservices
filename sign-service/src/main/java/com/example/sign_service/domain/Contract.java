@@ -27,7 +27,4 @@ public class Contract extends Base {
     @Column(nullable = false, length = 30)
     private ContractStatus status;
 
-    @Column(nullable = false)
-    private String callbackUrl;
-
 }

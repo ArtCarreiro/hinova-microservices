@@ -11,7 +11,4 @@ public class ContractRequestDTO {
     @NotBlank
     private String externalProposalId;
 
-    @NotBlank
-    private String callbackUrl;
-
 }
