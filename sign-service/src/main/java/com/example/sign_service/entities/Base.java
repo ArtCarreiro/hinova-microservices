@@ -1,15 +1,19 @@
 package com.example.sign_service.entities;
 
 import jakarta.persistence.*;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.util.Date;
 
-@Data
+@Getter
+@Setter
 @EqualsAndHashCode
 @MappedSuperclass
+@EntityListeners(AuditingEntityListener.class)
 public class Base {
 
     @Id

@@ -1,12 +1,14 @@
 package com.example.crm_service.entities;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "proposals")
 public class Proposal extends Base {
@@ -26,7 +28,7 @@ public class Proposal extends Base {
     private List<ProposalItem> items = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(nullable = false, length = 30)
     private ProposalStatus status;
 
 

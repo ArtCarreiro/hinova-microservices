@@ -2,11 +2,13 @@ package com.example.sign_service.entities;
 
 import jakarta.persistence.*;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Date;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "contracts")
 public class Contract extends Base {
@@ -17,11 +19,15 @@ public class Contract extends Base {
     @Column(nullable = false)
     private String document;
 
-    @Column(updatable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "signed_at")
     private Date signedAt;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(nullable = false, length = 30)
     private ContractStatus status;
+
+    @Column(nullable = false)
+    private String callbackUrl;
 
 }

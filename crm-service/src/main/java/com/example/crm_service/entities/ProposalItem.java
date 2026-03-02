@@ -1,15 +1,19 @@
 package com.example.crm_service.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "proposal_items")
 public class ProposalItem extends Base {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "proposal_uuid", nullable = false)
+    @JsonIgnore
     private Proposal proposal;
 
     @Column(nullable = false)

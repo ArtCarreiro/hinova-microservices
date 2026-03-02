@@ -5,4 +5,9 @@ import com.example.sign_service.repositories.abstracts.ContractAbstractRepositor
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ContractRepository extends ContractAbstractRepository<Contract> {}
+public interface ContractRepository extends ContractAbstractRepository<Contract> {
+
+    Contract findByUuid(String uuid);
+
+    Contract findByExternalProposalId(String externalProposalId);
+}
