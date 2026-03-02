@@ -1,4 +1,4 @@
-package com.example.crm_service.controllers.dto;
+package com.example.crm_service.dto;
 
 import lombok.Getter;
 import lombok.Setter;

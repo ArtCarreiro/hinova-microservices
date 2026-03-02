@@ -1,4 +1,4 @@
-package com.example.sign_service.domain;
+package com.example.sign_service.domains;
 
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;

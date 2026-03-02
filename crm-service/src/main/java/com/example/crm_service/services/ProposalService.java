@@ -1,6 +1,6 @@
 package com.example.crm_service.services;
 
-import com.example.crm_service.controllers.dto.SendToSignatureResponseDTO;
+import com.example.crm_service.dto.SendToSignatureResponseDTO;
 import com.example.crm_service.domain.Proposal;
 import com.example.crm_service.domain.ProposalStatus;
 import com.example.crm_service.integration.SignClient;
@@ -12,7 +12,6 @@ import jakarta.transaction.Transactional;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service

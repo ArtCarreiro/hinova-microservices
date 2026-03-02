@@ -1,4 +1,4 @@
-package com.example.sign_service.domain;
+package com.example.sign_service.domains;
 
 public enum ContractStatus {
 

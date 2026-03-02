@@ -1,18 +1,19 @@
 package com.example.sign_service.services;
 
-import com.example.sign_service.controllers.dto.ContractRequestDTO;
-import com.example.sign_service.controllers.dto.ContractResponseDTO;
-import com.example.sign_service.domain.Contract;
-import com.example.sign_service.domain.ContractStatus;
+import com.example.sign_service.dto.ContractRequestDTO;
+import com.example.sign_service.dto.ContractResponseDTO;
+import com.example.sign_service.domains.Contract;
+import com.example.sign_service.domains.ContractStatus;
+import com.example.sign_service.dto.CreateDocumentDTO;
 import com.example.sign_service.integration.CrmCallbackHttpClient;
 import com.example.sign_service.integration.dto.ContractSignedCallbackPayload;
-import com.example.sign_service.integration.interfaces.CrmCallbackHttpClientBO;
 import com.example.sign_service.repositories.ContractRepository;
 import com.example.sign_service.services.interfaces.ContractServiceBO;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import tools.jackson.databind.ObjectMapper;
 
 import java.time.Instant;
 import java.util.Date;
@@ -25,6 +26,9 @@ public class ContractService implements ContractServiceBO {
 
     @Autowired
     CrmCallbackHttpClient crmCallbackHttpClient;
+
+    @Autowired
+    ModelMapper modelMapper;
 
     @Override
     @Transactional
@@ -42,8 +46,10 @@ public class ContractService implements ContractServiceBO {
         Contract newContract = new Contract();
         newContract.setExternalProposalId(request.getExternalProposalId());
         newContract.setStatus(ContractStatus.PENDING_SIGNATURE);
-        newContract.setDocument("Contrato simulado da proposta: " + request.getExternalProposalId());
 
+        String json = convertToJson(modelMapper.map(newContract, CreateDocumentDTO.class));
+        if (json != null)
+            newContract.setDocumentJson(json);
         Contract saved = contractRepository.save(newContract);
 
         ContractResponseDTO response = new ContractResponseDTO();
@@ -68,6 +74,15 @@ public class ContractService implements ContractServiceBO {
             crmCallbackHttpClient.notifyContractSigned(payload);
         } catch (Exception e) {
             throw new RuntimeException("Error signing contract: " + e.getMessage());
+        }
+    }
+
+    public String convertToJson(CreateDocumentDTO contract) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            return objectMapper.writeValueAsString(contract);
+        } catch (Exception e) {
+            throw new RuntimeException("Error converting contract to JSON: " + e.getMessage());
         }
     }
 

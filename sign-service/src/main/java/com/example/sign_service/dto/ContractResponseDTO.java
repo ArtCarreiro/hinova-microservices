@@ -1,4 +1,4 @@
-package com.example.sign_service.controllers.dto;
+package com.example.sign_service.dto;
 
 import lombok.Getter;
 import lombok.Setter;

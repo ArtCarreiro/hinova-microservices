@@ -1,6 +1,6 @@
 package com.example.sign_service.repositories;
 
-import com.example.sign_service.domain.Contract;
+import com.example.sign_service.domains.Contract;
 import com.example.sign_service.repositories.abstracts.ContractAbstractRepository;
 import org.springframework.stereotype.Repository;
 

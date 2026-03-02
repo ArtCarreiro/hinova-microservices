@@ -1,4 +1,4 @@
-package com.example.sign_service.controllers.dto;
+package com.example.sign_service.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;

@@ -1,6 +1,6 @@
 package com.example.sign_service.repositories;
 
-import com.example.sign_service.domain.Base;
+import com.example.sign_service.domains.Base;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.NoRepositoryBean;
 

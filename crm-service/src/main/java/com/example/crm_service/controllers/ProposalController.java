@@ -1,6 +1,6 @@
 package com.example.crm_service.controllers;
 
-import com.example.crm_service.controllers.dto.SendToSignatureResponseDTO;
+import com.example.crm_service.dto.SendToSignatureResponseDTO;
 import com.example.crm_service.domain.Proposal;
 import com.example.crm_service.repositories.ProposalRepository;
 import com.example.crm_service.services.interfaces.ProposalServiceBO;

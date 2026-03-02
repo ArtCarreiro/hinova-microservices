@@ -1,6 +1,6 @@
 package com.example.crm_service.services;
 
-import com.example.crm_service.controllers.dto.ContractSignedCallbackRequestDTO;
+import com.example.crm_service.dto.ContractSignedCallbackRequestDTO;
 import com.example.crm_service.domain.Proposal;
 import com.example.crm_service.domain.ProposalStatus;
 import com.example.crm_service.repositories.ProposalRepository;

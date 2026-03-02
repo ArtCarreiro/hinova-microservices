@@ -1,4 +1,4 @@
-package com.example.sign_service.domain;
+package com.example.sign_service.domains;
 
 import jakarta.persistence.*;
 
@@ -16,8 +16,8 @@ public class Contract extends Base {
     @Column(nullable = false, unique = true)
     private String externalProposalId;
 
-    @Column(nullable = false)
-    private String document;
+    @Column(name = "document_json", nullable = false, columnDefinition = "TEXT")
+    private String documentJson;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "signed_at")
