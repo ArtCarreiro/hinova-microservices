@@ -1,0 +1,178 @@
+{
+  "info": {
+    "_postman_id": "86ea0652-21eb-4abd-90bd-028d1f1ec8f4",
+    "name": "CRM / SIGN",
+    "description": "Collection alinhada às entidades atuais. Inclui exemplos mínimos e exemplos opcionais com campos herdados de Base.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "36007204"
+  },
+  "item": [
+    {
+      "name": "Fluxo Principal",
+      "item": [
+        {
+          "name": "Criar Proposta",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const r = pm.response.json();",
+                  "pm.environment.set('proposalUuid', r.uuid);"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customerName\": \"Arthur\",\n  \"customerEmail\": \"arthur.carreirodev@gmail.com\",\n  \"customerCompany\": \"Company\",\n  \"status\": \"DRAFT\",\n  \"items\": [\n    { \"name\": \"Produto A\", \"quantity\": 2, \"unitPrice\": 100.00 },\n    { \"name\": \"Produto B\", \"quantity\": 1, \"unitPrice\": 250.00 }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{crm_base_url}}/proposals",
+              "host": [
+                "{{crm_base_url}}"
+              ],
+              "path": [
+                "proposals"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Buscar Proposta (CRM)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{crm_base_url}}/proposals/{{proposalUuid}}",
+              "host": [
+                "{{crm_base_url}}"
+              ],
+              "path": [
+                "proposals",
+                "{{proposalUuid}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Enviar para assinatura",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const r = pm.response.json();",
+                  "pm.environment.set('contractUuid', r.contractUuid || r.uuid);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{crm_base_url}}/proposals/{{proposalUuid}}/send-to-signature",
+              "host": [
+                "{{crm_base_url}}"
+              ],
+              "path": [
+                "proposals",
+                "{{proposalUuid}}",
+                "send-to-signature"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Buscar Contrato (SIGN)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{sign_base_url}}/contracts/{{contractUuid}}",
+              "host": [
+                "{{sign_base_url}}"
+              ],
+              "path": [
+                "contracts",
+                "{{contractUuid}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Assinar Contrato (SIGN)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{sign_base_url}}/contracts/{{contractUuid}}/sign",
+              "host": [
+                "{{sign_base_url}}"
+              ],
+              "path": [
+                "contracts",
+                "{{contractUuid}}",
+                "sign"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Buscar Proposta após assinatura (CRM)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{crm_base_url}}/proposals/{{proposalUuid}}",
+              "host": [
+                "{{crm_base_url}}"
+              ],
+              "path": [
+                "proposals",
+                "{{proposalUuid}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "crm_base_url",
+      "value": "http://localhost:8080"
+    },
+    {
+      "key": "sign_base_url",
+      "value": "http://localhost:8081"
+    },
+    {
+      "key": "proposalUuid",
+      "value": ""
+    },
+    {
+      "key": "contractUuid",
+      "value": ""
+    }
+  ]
+}

@@ -1,4 +1,4 @@
-package com.example.crm_service.entities;
+package com.example.crm_service.domain;
 
 import jakarta.persistence.*;
 import lombok.Getter;

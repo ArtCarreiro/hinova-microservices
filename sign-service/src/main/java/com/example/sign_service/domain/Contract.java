@@ -1,4 +1,4 @@
-package com.example.sign_service.entities;
+package com.example.sign_service.domain;
 
 import jakarta.persistence.*;
 

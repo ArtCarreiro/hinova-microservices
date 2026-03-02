@@ -1,6 +1,6 @@
 package com.example.crm_service.controllers;
 
-import com.example.crm_service.controllers.responseDTO.ContractSignedCallbackRequestDTO;
+import com.example.crm_service.controllers.dto.ContractSignedCallbackRequestDTO;
 import com.example.crm_service.services.interfaces.CallbackServiceBO;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

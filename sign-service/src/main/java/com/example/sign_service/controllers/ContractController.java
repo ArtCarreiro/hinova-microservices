@@ -2,7 +2,7 @@ package com.example.sign_service.controllers;
 
 import com.example.sign_service.controllers.dto.ContractRequestDTO;
 import com.example.sign_service.controllers.dto.ContractResponseDTO;
-import com.example.sign_service.entities.Contract;
+import com.example.sign_service.domain.Contract;
 import com.example.sign_service.repositories.ContractRepository;
 import com.example.sign_service.services.interfaces.ContractServiceBO;
 import jakarta.validation.Valid;

@@ -1,7 +1,7 @@
 package com.example.crm_service.controllers;
 
-import com.example.crm_service.controllers.responseDTO.SendToSignatureResponseDTO;
-import com.example.crm_service.entities.Proposal;
+import com.example.crm_service.controllers.dto.SendToSignatureResponseDTO;
+import com.example.crm_service.domain.Proposal;
 import com.example.crm_service.repositories.ProposalRepository;
 import com.example.crm_service.services.interfaces.ProposalServiceBO;
 import jakarta.validation.Valid;

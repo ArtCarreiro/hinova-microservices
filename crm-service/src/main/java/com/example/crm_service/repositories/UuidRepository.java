@@ -1,6 +1,6 @@
 package com.example.crm_service.repositories;
 
-import com.example.crm_service.entities.Base;
+import com.example.crm_service.domain.Base;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.NoRepositoryBean;
 

@@ -1,4 +1,4 @@
-package com.example.crm_service.controllers.responseDTO;
+package com.example.crm_service.controllers.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

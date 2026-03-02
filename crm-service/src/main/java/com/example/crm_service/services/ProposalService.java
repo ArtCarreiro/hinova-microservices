@@ -1,8 +1,8 @@
 package com.example.crm_service.services;
 
-import com.example.crm_service.controllers.responseDTO.SendToSignatureResponseDTO;
-import com.example.crm_service.entities.Proposal;
-import com.example.crm_service.entities.ProposalStatus;
+import com.example.crm_service.controllers.dto.SendToSignatureResponseDTO;
+import com.example.crm_service.domain.Proposal;
+import com.example.crm_service.domain.ProposalStatus;
 import com.example.crm_service.integration.SignClient;
 import com.example.crm_service.integration.dto.SignCreateContractRequestDTO;
 import com.example.crm_service.integration.dto.SignCreateContractResponseDTO;

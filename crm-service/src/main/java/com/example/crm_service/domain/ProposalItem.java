@@ -1,4 +1,4 @@
-package com.example.crm_service.entities;
+package com.example.crm_service.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;

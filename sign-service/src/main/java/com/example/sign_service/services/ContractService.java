@@ -2,8 +2,11 @@ package com.example.sign_service.services;
 
 import com.example.sign_service.controllers.dto.ContractRequestDTO;
 import com.example.sign_service.controllers.dto.ContractResponseDTO;
-import com.example.sign_service.entities.Contract;
-import com.example.sign_service.entities.ContractStatus;
+import com.example.sign_service.domain.Contract;
+import com.example.sign_service.domain.ContractStatus;
+import com.example.sign_service.integration.CrmCallbackHttpClient;
+import com.example.sign_service.integration.dto.ContractSignedCallbackPayload;
+import com.example.sign_service.integration.interfaces.CrmCallbackHttpClientBO;
 import com.example.sign_service.repositories.ContractRepository;
 import com.example.sign_service.services.interfaces.ContractServiceBO;
 import jakarta.transaction.Transactional;
@@ -21,7 +24,7 @@ public class ContractService implements ContractServiceBO {
     private ContractRepository contractRepository;
 
     @Autowired
-    private ModelMapper modelMapper;
+    CrmCallbackHttpClient crmCallbackHttpClient;
 
     @Override
     @Transactional
@@ -59,6 +62,11 @@ public class ContractService implements ContractServiceBO {
             contract.setStatus(ContractStatus.SIGNED);
             contract.setSignedAt(Date.from(Instant.now()));
             contractRepository.save(contract);
+
+            ContractSignedCallbackPayload payload = new ContractSignedCallbackPayload();
+            payload.setContractUuid(contract.getUuid());
+            payload.setStatus(contract.getStatus().name());
+            crmCallbackHttpClient.notifyContractSigned(payload);
         } catch (Exception e) {
             throw new RuntimeException("Error signing contract: " + e.getMessage());
         }

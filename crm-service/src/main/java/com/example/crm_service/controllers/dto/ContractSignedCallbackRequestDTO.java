@@ -1,12 +1,11 @@
-package com.example.sign_service.integration.dto;
-
+package com.example.crm_service.controllers.dto;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class ContractSignedCallbackPayload {
+public class ContractSignedCallbackRequestDTO {
 
     String contractUuid;
     String status;
