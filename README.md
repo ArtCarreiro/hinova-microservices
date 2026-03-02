@@ -63,5 +63,7 @@ mvn spring-boot:run
 ### Docker:
 
 ```bash
-docker-compose up -d
+docker compose build
+
+docker compose up -d
 ```
