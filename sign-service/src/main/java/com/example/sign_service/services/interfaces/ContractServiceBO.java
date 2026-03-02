@@ -8,4 +8,5 @@ public interface ContractServiceBO {
 
     void signContract(Contract contract);
     ContractResponseDTO createContract(ContractRequestDTO contract);
+
 }

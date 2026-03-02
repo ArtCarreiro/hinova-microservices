@@ -18,6 +18,7 @@ public class SignClient implements SignClientBO {
     }
 
     @Override
+    // Envia uma solicitação para criar um contrato na Sign Service e retorna a resposta
     public SignCreateContractResponseDTO createContract(SignCreateContractRequestDTO request) {
         return webClient.post()
                 .uri("/contracts")

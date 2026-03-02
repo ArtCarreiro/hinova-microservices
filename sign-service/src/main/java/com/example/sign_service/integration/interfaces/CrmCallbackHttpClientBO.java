@@ -1,7 +1,7 @@
 package com.example.sign_service.integration.interfaces;
 
-import com.example.sign_service.integration.dto.ContractSignedCallbackPayload;
+import com.example.sign_service.integration.dto.ContractSignedCallbackRequest;
 
 public interface CrmCallbackHttpClientBO {
-    void notifyContractSigned(ContractSignedCallbackPayload payload);
+    void notifyContractSigned(ContractSignedCallbackRequest payload);
 }

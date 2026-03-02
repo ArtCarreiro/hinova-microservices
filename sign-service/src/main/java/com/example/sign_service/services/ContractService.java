@@ -6,7 +6,7 @@ import com.example.sign_service.domains.Contract;
 import com.example.sign_service.domains.ContractStatus;
 import com.example.sign_service.dto.CreateDocumentDTO;
 import com.example.sign_service.integration.CrmCallbackHttpClient;
-import com.example.sign_service.integration.dto.ContractSignedCallbackPayload;
+import com.example.sign_service.integration.dto.ContractSignedCallbackRequest;
 import com.example.sign_service.repositories.ContractRepository;
 import com.example.sign_service.services.interfaces.ContractServiceBO;
 import jakarta.transaction.Transactional;
@@ -68,26 +68,28 @@ public class ContractService implements ContractServiceBO {
             contract.setSignedAt(Date.from(Instant.now()));
             contractRepository.save(contract);
 
-            ContractSignedCallbackPayload payload = new ContractSignedCallbackPayload();
-            payload.setContractUuid(contract.getUuid());
-            payload.setStatus(contract.getStatus().name());
-            crmCallbackHttpClient.notifyContractSigned(payload);
+            ContractSignedCallbackRequest request = new ContractSignedCallbackRequest();
+            request.setContractUuid(contract.getUuid());
+            request.setStatus(contract.getStatus().name());
+            crmCallbackHttpClient.notifyContractSigned(request);
         } catch (Exception e) {
-            throw new RuntimeException("Error signing contract: " + e.getMessage());
+            throw new RuntimeException("Erro ao assinar o contrato: " + e.getMessage());
         }
     }
 
+    // Converte o contrato para JSON
     public String convertToJson(CreateDocumentDTO contract) {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             return objectMapper.writeValueAsString(contract);
         } catch (Exception e) {
-            throw new RuntimeException("Error converting contract to JSON: " + e.getMessage());
+            throw new RuntimeException("Erro ao converter o contrato para JSON: " + e.getMessage());
         }
     }
 
+    // Verifica se o contrato já foi assinado antes de permitir a assinatura
     public void verifyContractStatus(Contract contract) {
         if (contract.getStatus().equals(ContractStatus.SIGNED))
-            throw new IllegalStateException("Contract already signed");
+            throw new IllegalStateException("Contrato já assinado");
     }
 }

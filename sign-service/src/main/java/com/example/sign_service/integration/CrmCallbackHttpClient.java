@@ -1,6 +1,6 @@
 package com.example.sign_service.integration;
 
-import com.example.sign_service.integration.dto.ContractSignedCallbackPayload;
+import com.example.sign_service.integration.dto.ContractSignedCallbackRequest;
 import com.example.sign_service.integration.interfaces.CrmCallbackHttpClientBO;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -17,10 +17,11 @@ public class CrmCallbackHttpClient implements CrmCallbackHttpClientBO {
     }
 
     @Override
-    public void notifyContractSigned(ContractSignedCallbackPayload payload) {
+    // Envia uma solicitação para notificar o CRM sobre um contrato assinado
+    public void notifyContractSigned(ContractSignedCallbackRequest request) {
         webClient.post()
                 .uri("/sign/callbacks/contract-signed")
-                .bodyValue(payload)
+                .bodyValue(request)
                 .retrieve()
                 .toBodilessEntity()
                 .block();

@@ -29,9 +29,8 @@ public class ProposalService implements ProposalServiceBO {
     @Override
     @Transactional
     public Proposal createProposal(Proposal newProposal) {
-        if (newProposal.getItems() != null) {
+        if (newProposal.getItems() != null)
             newProposal.getItems().forEach(item -> item.setProposal(newProposal));
-        }
         return proposalRepository.save(newProposal);
     }
 
@@ -61,10 +60,4 @@ public class ProposalService implements ProposalServiceBO {
         }
 
     }
-
-    public void verifySendToSignature(Proposal proposal) {
-        if (proposal.getStatus() != ProposalStatus.DRAFT)
-            throw new IllegalStateException("Proposta " + proposal.getUuid() + " não está em estado DRAFT");
-    }
-
 }

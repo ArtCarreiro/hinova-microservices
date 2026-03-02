@@ -6,7 +6,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class ContractSignedCallbackPayload {
+public class ContractSignedCallbackRequest {
 
     String contractUuid;
     String status;
