@@ -23,7 +23,7 @@ public class CallbackService implements CallbackServiceBO {
     public void handleContractSignedCallback(ContractSignedCallbackRequestDTO request) {
         Proposal proposal = proposalRepository.findByContractUuid(request.getContractUuid());
         if (proposal == null)
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Nao existe proposta para o contractUuid informado: " + request.getContractUuid());
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Não existe proposta para o contractUuid informado: " + request.getContractUuid());
         verifyContractSignedCallback(proposal, request);
         if (!proposal.getStatus().equals(ProposalStatus.SIGNED)) {
             proposal.setStatus(ProposalStatus.SIGNED);

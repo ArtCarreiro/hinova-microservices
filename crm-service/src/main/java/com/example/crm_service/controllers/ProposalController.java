@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/proposals")
-@Tag(name = "Proposals", description = "Operacoes de propostas no CRM")
+@Tag(name = "Proposals", description = "Operações de propostas no CRM")
 @Validated
 public class ProposalController {
 
@@ -43,7 +43,7 @@ public class ProposalController {
     }
 
     @PostMapping("/{uuid}/send-to-signature")
-    @Operation(summary = "Enviar proposta para assinatura", description = "Solicita ao SIGN a geracao de contrato para a proposta.")
+    @Operation(summary = "Enviar proposta para assinatura", description = "Solicita ao SIGN a geração de contrato para a proposta.")
     public ResponseEntity<SendToSignatureResponseDTO> sendToSignature(@PathVariable String uuid) {
         Proposal proposal = proposalRepository.findByUuid(uuid);
         if (proposal == null)

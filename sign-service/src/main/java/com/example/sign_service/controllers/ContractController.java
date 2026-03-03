@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/contracts")
-@Tag(name = "Contracts", description = "Operacoes de contrato no SIGN")
+@Tag(name = "Contracts", description = "Operações de contrato no SIGN")
 public class ContractController {
 
     @Autowired

@@ -44,9 +44,9 @@ public class ProposalService implements ProposalServiceBO {
         try {
             return proposalRepository.save(newProposal);
         } catch (DataIntegrityViolationException e) {
-            Proposal proposalAfterRace = proposalRepository.findByIdempotencyKey(idempotencyKey);
-            if (proposalAfterRace != null)
-                return proposalAfterRace;
+            Proposal proposal = proposalRepository.findByIdempotencyKey(idempotencyKey);
+            if (proposal != null)
+                return proposal;
             throw e;
         }
     }
