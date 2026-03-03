@@ -62,19 +62,17 @@ public class ContractService implements ContractServiceBO {
     @Override
     @Transactional
     public void signContract(Contract contract) {
-        verifyContractStatus(contract);
-        try {
-            contract.setStatus(ContractStatus.SIGNED);
-            contract.setSignedAt(Date.from(Instant.now()));
-            contractRepository.save(contract);
+        if (contract.getStatus().equals(ContractStatus.SIGNED))
+            return;
 
-            ContractSignedCallbackRequest request = new ContractSignedCallbackRequest();
-            request.setContractUuid(contract.getUuid());
-            request.setStatus(contract.getStatus().name());
-            crmCallbackHttpClient.notifyContractSigned(request);
-        } catch (Exception e) {
-            throw new RuntimeException("Erro ao assinar o contrato: " + e.getMessage());
-        }
+        contract.setStatus(ContractStatus.SIGNED);
+        contract.setSignedAt(Date.from(Instant.now()));
+        contractRepository.save(contract);
+
+        ContractSignedCallbackRequest request = new ContractSignedCallbackRequest();
+        request.setContractUuid(contract.getUuid());
+        request.setStatus(contract.getStatus().name());
+        crmCallbackHttpClient.notifyContractSigned(request);
     }
 
     // Converte o contrato para JSON
@@ -87,9 +85,4 @@ public class ContractService implements ContractServiceBO {
         }
     }
 
-    // Verifica se o contrato já foi assinado antes de permitir a assinatura
-    public void verifyContractStatus(Contract contract) {
-        if (contract.getStatus().equals(ContractStatus.SIGNED))
-            throw new IllegalStateException("Contrato já assinado");
-    }
 }

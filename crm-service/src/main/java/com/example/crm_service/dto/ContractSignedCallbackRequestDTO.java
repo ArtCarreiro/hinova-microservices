@@ -1,5 +1,6 @@
 package com.example.crm_service.dto;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -7,7 +8,10 @@ import lombok.Setter;
 @Setter
 public class ContractSignedCallbackRequestDTO {
 
-    String contractUuid;
-    String status;
+    @NotBlank
+    private String contractUuid;
+
+    @NotBlank
+    private String status;
 
 }

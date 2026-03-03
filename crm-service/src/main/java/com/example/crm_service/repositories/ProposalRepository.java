@@ -8,5 +8,6 @@ import org.springframework.stereotype.Repository;
 public interface ProposalRepository extends ProposalAbstractRepository<Proposal> {
 
     Proposal findByContractUuid(String uuid);
+    Proposal findByIdempotencyKey(String idempotencyKey);
 
 }

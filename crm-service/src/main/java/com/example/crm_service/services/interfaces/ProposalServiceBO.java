@@ -5,7 +5,7 @@ import com.example.crm_service.domain.Proposal;
 
 public interface ProposalServiceBO {
 
-    Proposal createProposal(Proposal newProposal);
+    Proposal createProposal(String idempotencyKey, Proposal newProposal);
     SendToSignatureResponseDTO sendToSignature(Proposal proposal);
 
 }

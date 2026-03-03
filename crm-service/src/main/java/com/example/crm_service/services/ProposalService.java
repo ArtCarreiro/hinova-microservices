@@ -12,6 +12,7 @@ import jakarta.transaction.Transactional;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -28,10 +29,26 @@ public class ProposalService implements ProposalServiceBO {
 
     @Override
     @Transactional
-    public Proposal createProposal(Proposal newProposal) {
+    public Proposal createProposal(String idempotencyKey, Proposal newProposal) {
+        Proposal existingProposal = proposalRepository.findByIdempotencyKey(idempotencyKey);
+        if (existingProposal != null)
+            return existingProposal;
+
+        newProposal.setUuid(null);
+        newProposal.setContractUuid(null);
+        newProposal.setStatus(ProposalStatus.DRAFT);
+        newProposal.setIdempotencyKey(idempotencyKey);
         if (newProposal.getItems() != null)
             newProposal.getItems().forEach(item -> item.setProposal(newProposal));
-        return proposalRepository.save(newProposal);
+
+        try {
+            return proposalRepository.save(newProposal);
+        } catch (DataIntegrityViolationException e) {
+            Proposal proposalAfterRace = proposalRepository.findByIdempotencyKey(idempotencyKey);
+            if (proposalAfterRace != null)
+                return proposalAfterRace;
+            throw e;
+        }
     }
 
     @Override
