@@ -7,6 +7,7 @@ import com.example.sign_service.domains.Contract;
 public interface ContractServiceBO {
 
     void signContract(Contract contract);
+
     ContractResponseDTO createContract(ContractRequestDTO contract);
 
 }

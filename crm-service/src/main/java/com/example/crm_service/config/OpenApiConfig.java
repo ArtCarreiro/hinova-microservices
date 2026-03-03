@@ -14,8 +14,8 @@ public class OpenApiConfig {
         return new OpenAPI()
                 .info(new Info()
                         .title("CRM Service API")
-                        .description("API do modulo CRM para criacao de propostas, consulta e envio para assinatura.")
+                        .description("API do modulo CRM para criação de propostas, consulta e envio para assinatura.")
                         .version("v1")
-                        .license(new License().name("Uso interno - Desafio Tecnico")));
+                        .license(new License().name("Uso interno - Desafio Técnico")));
     }
 }

@@ -21,7 +21,7 @@ public class CallbacksController {
     private CallbackServiceBO callbackServiceBO;
 
     @PostMapping("/contract-signed")
-    @Operation(summary = "Receber callback de contrato assinado", description = "Atualiza a proposta no CRM quando o contrato e assinado no SIGN.")
+    @Operation(summary = "Receber callback de contrato assinado", description = "Atualiza a proposta no CRM quando o contrato é assinado no SIGN.")
     public ResponseEntity<Void> contractSigned(@Valid @RequestBody ContractSignedCallbackRequestDTO request) {
         callbackServiceBO.handleContractSignedCallback(request);
         return ResponseEntity.noContent().build();
