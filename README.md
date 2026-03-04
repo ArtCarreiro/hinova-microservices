@@ -71,8 +71,6 @@ mvn spring-boot:run
 cd sign-service
 mvn spring-boot:run
 ```
-
-Observação: no modo local, o default é Kafka em `localhost:29092` (porta exposta pelo `docker-compose`).
 ---
 
 ## Swagger
