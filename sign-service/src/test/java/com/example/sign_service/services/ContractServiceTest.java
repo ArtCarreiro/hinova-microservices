@@ -15,6 +15,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.dao.DataIntegrityViolationException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -102,5 +103,26 @@ class ContractServiceTest {
         assertThat(response.getUuid()).isEqualTo("contract-4");
         assertThat(response.getStatus()).isEqualTo("PENDING_SIGNATURE");
         verify(contractRepository).save(any(Contract.class));
+    }
+
+    @Test
+    void createContractShouldHandleConcurrentRequestsWithSameExternalProposalId() {
+        ContractRequestDTO request = new ContractRequestDTO();
+        request.setExternalProposalId("proposal-race");
+
+        Contract persisted = new Contract();
+        persisted.setUuid("contract-race");
+        persisted.setStatus(ContractStatus.PENDING_SIGNATURE);
+
+        when(contractRepository.findByExternalProposalId("proposal-race")).thenReturn(null, persisted);
+        when(modelMapper.map(any(Contract.class), eq(CreateDocumentDTO.class))).thenReturn(new CreateDocumentDTO());
+        when(contractRepository.save(any(Contract.class))).thenThrow(new DataIntegrityViolationException("duplicate"));
+
+        ContractResponseDTO response = contractService.createContract(request);
+
+        assertThat(response.getUuid()).isEqualTo("contract-race");
+        assertThat(response.getStatus()).isEqualTo("PENDING_SIGNATURE");
+        verify(contractRepository).save(any(Contract.class));
+        verify(contractRepository, times(2)).findByExternalProposalId("proposal-race");
     }
 }

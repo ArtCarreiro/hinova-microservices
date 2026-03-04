@@ -12,6 +12,7 @@ import com.example.sign_service.services.interfaces.ContractServiceBO;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import tools.jackson.databind.ObjectMapper;
 
@@ -36,12 +37,8 @@ public class ContractService implements ContractServiceBO {
         Contract existing = contractRepository
                 .findByExternalProposalId(request.getExternalProposalId());
 
-        if (existing != null) {
-            ContractResponseDTO response = new ContractResponseDTO();
-            response.setUuid(existing.getUuid());
-            response.setStatus(existing.getStatus().name());
-            return response;
-        }
+        if (existing != null)
+            return toContractResponse(existing);
 
         Contract newContract = new Contract();
         newContract.setExternalProposalId(request.getExternalProposalId());
@@ -50,13 +47,15 @@ public class ContractService implements ContractServiceBO {
         String json = convertToJson(modelMapper.map(newContract, CreateDocumentDTO.class));
         if (json != null)
             newContract.setDocumentJson(json);
-        Contract saved = contractRepository.save(newContract);
-
-        ContractResponseDTO response = new ContractResponseDTO();
-        response.setUuid(saved.getUuid());
-        response.setStatus(saved.getStatus().name());
-
-        return response;
+        try {
+            Contract saved = contractRepository.save(newContract);
+            return toContractResponse(saved);
+        } catch (DataIntegrityViolationException e) {
+            Contract contract = contractRepository.findByExternalProposalId(request.getExternalProposalId());
+            if (contract != null)
+                return toContractResponse(contract);
+            throw e;
+        }
     }
 
     @Override
@@ -83,6 +82,13 @@ public class ContractService implements ContractServiceBO {
         } catch (Exception e) {
             throw new RuntimeException("Erro ao converter o contrato para JSON: " + e.getMessage());
         }
+    }
+
+    private ContractResponseDTO toContractResponse(Contract contract) {
+        ContractResponseDTO response = new ContractResponseDTO();
+        response.setUuid(contract.getUuid());
+        response.setStatus(contract.getStatus().name());
+        return response;
     }
 
 }
