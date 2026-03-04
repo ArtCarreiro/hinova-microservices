@@ -5,15 +5,14 @@ import com.example.sign_service.dto.ContractResponseDTO;
 import com.example.sign_service.domains.Contract;
 import com.example.sign_service.domains.ContractStatus;
 import com.example.sign_service.dto.CreateDocumentDTO;
-import com.example.sign_service.integration.CrmCallbackHttpClient;
-import com.example.sign_service.integration.dto.ContractSignedCallbackRequest;
+import com.example.sign_service.messaging.ContractSignedEvent;
 import com.example.sign_service.repositories.ContractRepository;
 import com.example.sign_service.services.interfaces.ContractServiceBO;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import tools.jackson.databind.ObjectMapper;
 
 import java.time.Instant;
 import java.util.Date;
@@ -25,10 +24,10 @@ public class ContractService implements ContractServiceBO {
     private ContractRepository contractRepository;
 
     @Autowired
-    CrmCallbackHttpClient crmCallbackHttpClient;
+    private ContractSignedEvent contractSignedEvent;
 
     @Autowired
-    ModelMapper modelMapper;
+    private ModelMapper modelMapper;
 
     @Override
     @Transactional
@@ -68,11 +67,7 @@ public class ContractService implements ContractServiceBO {
         contract.setStatus(ContractStatus.SIGNED);
         contract.setSignedAt(Date.from(Instant.now()));
         contractRepository.save(contract);
-
-        ContractSignedCallbackRequest request = new ContractSignedCallbackRequest();
-        request.setContractUuid(contract.getUuid());
-        request.setStatus(contract.getStatus().name());
-        crmCallbackHttpClient.notifyContractSigned(request);
+        contractSignedEvent.publishSigned(contract);
     }
 
     // Converte o contrato para JSON

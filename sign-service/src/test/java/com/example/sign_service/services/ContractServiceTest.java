@@ -5,13 +5,11 @@ import com.example.sign_service.domains.ContractStatus;
 import com.example.sign_service.dto.ContractRequestDTO;
 import com.example.sign_service.dto.ContractResponseDTO;
 import com.example.sign_service.dto.CreateDocumentDTO;
-import com.example.sign_service.integration.CrmCallbackHttpClient;
-import com.example.sign_service.integration.dto.ContractSignedCallbackRequest;
+import com.example.sign_service.messaging.ContractSignedEvent;
 import com.example.sign_service.repositories.ContractRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.modelmapper.ModelMapper;
-import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -27,7 +25,7 @@ class ContractServiceTest {
     private ContractRepository contractRepository;
 
     @Mock
-    private CrmCallbackHttpClient crmCallbackHttpClient;
+    private ContractSignedEvent contractSignedEvent;
 
     @Mock
     private ModelMapper modelMapper;
@@ -62,11 +60,11 @@ class ContractServiceTest {
         contractService.signContract(contract);
 
         verify(contractRepository, never()).save(any(Contract.class));
-        verifyNoInteractions(crmCallbackHttpClient);
+        verifyNoInteractions(contractSignedEvent);
     }
 
     @Test
-    void signContractShouldSignAndNotifyCallback() {
+    void signContractShouldSignAndPublishEvent() {
         Contract contract = new Contract();
         contract.setUuid("contract-3");
         contract.setStatus(ContractStatus.PENDING_SIGNATURE);
@@ -76,12 +74,7 @@ class ContractServiceTest {
         assertThat(contract.getStatus()).isEqualTo(ContractStatus.SIGNED);
         assertThat(contract.getSignedAt()).isNotNull();
         verify(contractRepository).save(contract);
-
-        ArgumentCaptor<ContractSignedCallbackRequest> callbackCaptor =
-                ArgumentCaptor.forClass(ContractSignedCallbackRequest.class);
-        verify(crmCallbackHttpClient).notifyContractSigned(callbackCaptor.capture());
-        assertThat(callbackCaptor.getValue().getContractUuid()).isEqualTo("contract-3");
-        assertThat(callbackCaptor.getValue().getStatus()).isEqualTo("SIGNED");
+        verify(contractSignedEvent).publishSigned(contract);
     }
 
     @Test

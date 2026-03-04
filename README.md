@@ -3,7 +3,8 @@
 Implementação do desafio técnico de uma plataforma SaaS com dois módulos independentes:
 
 - `crm-service`: cria propostas comerciais, consulta propostas e envia para assinatura.
-- `sign-service`: cria contratos, consulta contrato, assina contrato e notifica o CRM por callback.
+- `sign-service`: cria contratos, consulta contrato e assina contrato.
+- Apache Kafka para notificar o CRM de forma assíncrona quando um contrato é assinado.
 
 ## Requisitos Técnicos Atendidos
 
@@ -21,8 +22,7 @@ api/
 ├── utils/
 │   ├── postman/
 │   └── scripts/
-└── docs/
-    └── Decisões-Técnicas.md
+└── docker-compose.yml
 ```
 
 ## Como Rodar
@@ -40,14 +40,14 @@ Serviços:
 
 - CRM: `http://localhost:8080`
 - SIGN: `http://localhost:8081`
+- Kafka: `localhost:9092`
 
 ### Opção 2: Execução local
 
-1. Suba um MySQL local e crie os bancos:
+1. Suba apenas a infraestrutura (MySQL + Kafka):
 
 ```bash
-cd utils/scripts
-./create-databases.sh
+docker compose up -d mysql-crm mysql-sign kafka
 ```
 
 2. Execute o CRM:
@@ -75,8 +75,9 @@ mvn spring-boot:run
 2. Enviar proposta para assinatura (`POST /proposals/{uuid}/send-to-signature`).
 3. Consultar contrato no SIGN (`GET /contracts/{uuid}`).
 4. Assinar contrato no SIGN (`POST /contracts/{uuid}/sign`).
-5. SIGN envia callback para CRM (`POST /sign/callbacks/contract-signed`).
-6. Consultar proposta assinada no CRM (`GET /proposals/{uuid}`).
+5. SIGN publica evento `contract-signed.v1` no Kafka.
+6. CRM consome o evento e atualiza a proposta para `SIGNED`.
+7. Consultar proposta assinada no CRM (`GET /proposals/{uuid}`).
 
 ## Testes
 
@@ -93,7 +94,7 @@ mvn -pl crm-service test
 mvn -pl sign-service test
 ```
 
-Os testes atuais são unitários (JUnit 5 + Mockito), sem dependência de banco MySQL externo.
+Os testes atuais são unitários (JUnit 5 + Mockito).
 
 
 ## Collection Postman para testes:

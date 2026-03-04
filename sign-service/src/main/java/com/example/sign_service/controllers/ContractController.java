@@ -38,7 +38,7 @@ public class ContractController {
     }
 
     @PostMapping("/{uuid}/sign")
-    @Operation(summary = "Assinar contrato", description = "Marca o contrato como assinado e notifica o CRM via callback.")
+    @Operation(summary = "Assinar contrato", description = "Marca o contrato como assinado e publica evento no Kafka para o CRM.")
     public ResponseEntity<Contract> signContract(@PathVariable String uuid) {
         Contract contract = contractRepository.findByUuid(uuid);
         if (contract != null)

@@ -14,7 +14,7 @@ public class OpenApiConfig {
         return new OpenAPI()
                 .info(new Info()
                         .title("SIGN Service API")
-                        .description("API do módulo SIGN para criação de contratos, assinatura e callbacks para o CRM.")
+                        .description("API do módulo SIGN para criação e assinatura de contratos, com publicação de evento no Kafka.")
                         .version("v1")
                         .license(new License().name("Uso interno - Desafio Técnico")));
     }
