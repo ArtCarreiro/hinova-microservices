@@ -3,15 +3,22 @@
 Implementação do desafio técnico de uma plataforma SaaS com dois módulos independentes:
 
 - `crm-service`: cria propostas comerciais, consulta propostas e envia para assinatura.
+
 - `sign-service`: cria contratos, consulta contrato e assina contrato.
-- Apache Kafka para notificar o CRM de forma assíncrona quando um contrato é assinado.
+
+---
 
 ## Requisitos Técnicos Atendidos
 
 - Java 17+
 - Spring Boot
 - Persistência em MySQL
+- Docker
+- Kafka para comunicação assíncrona
+- Testes unitários com JUnit 5 e Mockito
 - Documentação via Swagger
+
+---
 
 ## Estrutura do Repositório
 
@@ -24,6 +31,7 @@ api/
 │   └── scripts/
 └── docker-compose.yml
 ```
+---
 
 ## Como Rodar
 
@@ -40,7 +48,7 @@ Serviços:
 
 - CRM: `http://localhost:8080`
 - SIGN: `http://localhost:8081`
-- Kafka: `localhost:9092`
+- Kafka (host): `localhost:29092`
 
 ### Opção 2: Execução local
 
@@ -64,10 +72,15 @@ cd sign-service
 mvn spring-boot:run
 ```
 
+Observação: no modo local, o default é Kafka em `localhost:29092` (porta exposta pelo `docker-compose`).
+---
+
 ## Swagger
 
 - CRM Swagger UI: `http://localhost:8080/swagger-ui.html`
 - SIGN Swagger UI: `http://localhost:8081/swagger-ui.html`
+
+---
 
 ## Fluxo Principal
 
@@ -78,6 +91,8 @@ mvn spring-boot:run
 5. SIGN publica evento `contract-signed.v1` no Kafka.
 6. CRM consome o evento e atualiza a proposta para `SIGNED`.
 7. Consultar proposta assinada no CRM (`GET /proposals/{uuid}`).
+
+---
 
 ## Testes
 
@@ -96,6 +111,7 @@ mvn -pl sign-service test
 
 Os testes atuais são unitários (JUnit 5 + Mockito).
 
+---
 
 ## Collection Postman para testes:
 
