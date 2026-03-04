@@ -124,7 +124,7 @@
         {
           "name": "Assinar Contrato (SIGN)",
           "request": {
-            "method": "POST",
+            "method": "PUT",
             "header": [],
             "url": {
               "raw": "{{sign_base_url}}/contracts/{{contractUuid}}/sign",
