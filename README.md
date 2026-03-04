@@ -60,7 +60,6 @@ mvn spring-boot:run
 ```
 ***
 
----
 
 # Decisões Técnicas
 
@@ -92,7 +91,7 @@ mvn spring-boot:run
 
 ## Resalvas:
 
-- Há uma branch chamada `origin/Kafka` onde foi implementada uma versão utilizando Kafka para comunicação assíncrona entre os serviços.
+- Há uma branch chamada `Kafka` onde foi implementada uma versão utilizando Kafka para comunicação assíncrona entre os serviços.
   A branch principal (main) utiliza comunicação síncrona via REST para simplicidade e clareza do fluxo.
 
 - O foco do projeto foi na implementação do fluxo principal e na demonstração de boas práticas, portanto, algumas funcionalidades adicionais
