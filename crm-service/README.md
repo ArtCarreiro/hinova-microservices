@@ -9,12 +9,26 @@ O **CRM Service** é uma API responsável por centralizar e orquestrar as opera�
 - Integração com provedores de assinatura eletrônica, automatizando o envio e acompanhamento do processo de formalização.
 
 
+## Requisitos Técnicos Atendidos
+
+- Java 17+
+- Spring Boot
+- Princípios SOLID
+- Arquitetura em camadas
+- Testes unitários e de integração
+- Docker
+- Persistência em MySQL
+- Documentação via Swagger
+
 ## Endpoints Públicos
 
 ```text
 POST /proposals
 GET  /proposals/{uuid}
 POST /proposals/{uuid}/send-to-signature
+```
+```text
+POST /sign/callbacks/contract-signed
 ```
 
 ## Estrutura
@@ -26,7 +40,6 @@ src/main/java/com/example/crm_service/
 ├── domain
 ├── dto
 ├── integration
-├── messaging
 ├── repositories
 └── services
 ```

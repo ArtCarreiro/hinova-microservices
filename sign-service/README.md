@@ -9,6 +9,18 @@ O **SIGN Service** é uma API especializada na gestão do ciclo completo de assi
 - Acompanhamento e atualização do status das assinaturas em tempo real.
 - Persistência e rastreabilidade de eventos relacionados ao processo de assinatura.
 
+## Requisitos Técnicos Atendidos
+
+- Java 17+
+- Spring Boot
+- Princípios SOLID
+- Arquitetura em camadas
+- Testes unitários e de integração
+- Docker
+- Persistência em MySQL
+- Documentação via Swagger
+
+
 ## Endpoints Públicos
 
 ```text
@@ -24,7 +36,7 @@ src/main/java/com/example/sign_service/
 ├── controllers
 ├── domains
 ├── dto
-├── messaging
+├── integration
 ├── repositories
 └── services
 ```

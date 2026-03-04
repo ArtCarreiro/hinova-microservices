@@ -1,31 +1,45 @@
-# Plataforma de Propostas e Assinaturas (CRM + SIGN)
+# Plataforma de Propostas e Assinaturas
 
-Implementação do desafio técnico de uma plataforma SaaS com dois módulos independentes:
+## Arquitetura
 
-- `crm-service`: cria propostas comerciais, consulta propostas e envia para assinatura.
-- `sign-service`: cria contratos, consulta contrato, assina contrato e notifica o CRM por callback.
+A solução foi dividida em dois serviços independentes para simular um cenário de arquitetura distribuída e separar responsabilidades:
 
-## Requisitos Técnicos Atendidos
+- **crm-service**
+    - Responsável por gerenciar propostas comerciais
+    - Inicia o fluxo de assinatura ao enviar a proposta para o serviço de assinatura
+
+- **sign-service**
+    - Responsável por gerenciar contratos e assinaturas
+    - Processa a assinatura e notifica o CRM via callback quando o contrato é assinado
+
+A comunicação entre os serviços ocorre via **HTTP REST**, com **callback** do SIGN para o CRM ao final do fluxo.
+***
+
+## Decisões Técnicas
+
+### Separação em dois serviços (CRM e SIGN)
+A separação simula uma arquitetura de microserviços, garantindo isolamento de responsabilidades e permitindo que cada serviço evolua de forma independente (ex.: escalabilidade, deployment, regras de negócio).
+
+### Spring Boot + Maven
+Escolhidos por serem amplamente utilizados no ecossistema Java, com suporte robusto para APIs REST, validações, testes e padronização de build.
+
+### Idempotency-Key na criação de propostas
+Utilizado no endpoint `POST /proposals` para evitar duplicidade em cenários comuns de retry (ex.: falhas de rede, timeouts, reenvio de requisição).
+
+### Callback do SIGN para o CRM
+Após a assinatura, o serviço SIGN notifica o CRM via callback (`POST /sign/callbacks/contract-signed`) para atualização do status da proposta e consistência do fluxo.
+
+## Requisitos
 
 - Java 17+
-- Spring Boot
-- Persistência em MySQL
-- Documentação via Swagger
+- Maven 3.8+
+- Docker e Docker Compose (opcional, para execução via Compose)
+- MySQL (caso execute local sem Docker)
 
-## Estrutura do Repositório
 
-```text
-api/
-├── crm-service/
-├── sign-service/
-├── utils/
-│   ├── postman/
-│   └── scripts/
-└── docs/
-    └── Decisões-Técnicas.md
-```
+***
 
-## Como Rodar
+## Como rodar o projeto:
 
 ### Opção 1: Docker Compose
 
@@ -35,11 +49,6 @@ Na raiz do projeto (api):
 docker compose build
 docker compose up -d
 ```
-
-Serviços:
-
-- CRM: `http://localhost:8080`
-- SIGN: `http://localhost:8081`
 
 ### Opção 2: Execução local
 
@@ -63,6 +72,7 @@ mvn spring-boot:run
 cd sign-service
 mvn spring-boot:run
 ```
+***
 
 ## Swagger
 
@@ -77,6 +87,8 @@ mvn spring-boot:run
 4. Assinar contrato no SIGN (`POST /contracts/{uuid}/sign`).
 5. SIGN envia callback para CRM (`POST /sign/callbacks/contract-signed`).
 6. Consultar proposta assinada no CRM (`GET /proposals/{uuid}`).
+
+***
 
 ## Testes
 
@@ -93,7 +105,7 @@ mvn -pl crm-service test
 mvn -pl sign-service test
 ```
 
-Os testes atuais são unitários (JUnit 5 + Mockito), sem dependência de banco MySQL externo.
+Os testes atuais são unitários (JUnit 5 + Mockito).
 
 
 ## Collection Postman para testes:
