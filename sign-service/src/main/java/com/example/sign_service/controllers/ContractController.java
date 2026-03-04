@@ -37,7 +37,7 @@ public class ContractController {
         return contract != null ? ResponseEntity.ok(contract) : ResponseEntity.notFound().build();
     }
 
-    @PostMapping("/{uuid}/sign")
+    @PutMapping("/{uuid}/sign")
     @Operation(summary = "Assinar contrato", description = "Marca o contrato como assinado e notifica o CRM via callback.")
     public ResponseEntity<Contract> signContract(@PathVariable String uuid) {
         Contract contract = contractRepository.findByUuid(uuid);

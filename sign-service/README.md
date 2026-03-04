@@ -26,7 +26,7 @@ O **SIGN Service** é uma API especializada na gestão do ciclo completo de assi
 ```text
 POST /contracts
 GET  /contracts/{uuid}
-POST /contracts/{uuid}/sign
+PUT  /contracts/{uuid}/sign
 ```
 
 ## Estrutura
